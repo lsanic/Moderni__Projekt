@@ -1,0 +1,22 @@
+class Main {
+  function void main() {
+    var int tipka;
+    var Igra igra;
+    do Ekran.print();
+    do Random.seed();
+    
+    do Screen.clearScreen();
+    //// pokrecemo novu igru i inicijaliziramo ju
+    let igra = Igra.new();
+    do igra.init();
+    while (true) {
+      do igra.next();
+      
+      let tipka = Keyboard.keyPressed();
+      if (~(tipka = 0)) {
+        do igra.tipkanje(tipka);
+      }
+    }
+    return;
+  }
+}

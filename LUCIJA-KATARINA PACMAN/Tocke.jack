@@ -1,0 +1,100 @@
+class Tocke {
+  field Array tocke;
+  field int broj;
+  
+
+  /// mreza tocaka - sluzi kod iscrtavanja
+  field int stupac;
+  field int redak;
+  field int razmak;
+
+
+  field int brojpojedenih;
+
+  constructor Tocke new() {
+    let stupac = 17;
+    let redak = 12;
+    let razmak = 175;
+    let broj = redak*stupac;
+    let tocke = Array.new(broj);
+    let brojpojedenih = 0;
+    do crtanjetocaka();
+
+    return this;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+  method void crtanjetocaka() {
+    var int x, y;
+    var int i;
+    var int r, s;
+    let i = 0;
+
+    while (i < broj) {
+      let r = i / stupac;
+      let s = i - (r * stupac);
+      let x = (razmak * s) / 10 + 44;
+      let y = (razmak * r) / 10 + 26;
+      let tocke[i] = Tocka.new(x, y);
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void draw() {
+    var int i;
+    var Tocka t;
+    let i = 0;
+    while (i < broj) {
+      let t = tocke[i];
+      do t.draw();
+      let i = i + 1;
+    }
+    return;
+  }
+  method int vratibroj()
+ {   return broj;
+  }
+  method int vratibrojpojedenih() {
+    return brojpojedenih;
+  }
+
+  method void PojedeneSu(int x1, int y1, int x2, int y2, boolean jede) {
+    var int i;
+    var Tocka t;
+    let i = 0;
+    while (i < broj) {
+      let t = tocke[i];
+      if (t.Preklapanje(x1, y1, x2, y2)) {
+        if (~(t.VratiPojedena())) {
+          if (jede) {
+            do t.PojedenaJe();
+            let brojpojedenih = brojpojedenih + 1;
+          }
+          do t.draw();
+        }
+        return;
+      }
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void dispose() {
+    var Tocka t;
+    var int i;
+    let i = 0;
+    while (i < broj) {
+      let t = tocke[i];
+      do t.dispose();
+      let i = i + 1;
+    }
+    do tocke.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

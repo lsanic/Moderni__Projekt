@@ -1,0 +1,42 @@
+class Bodovi {
+
+  field int bodovi;
+  field Tocke tocke;
+
+  constructor Bodovi new(Tocke t) {
+    let bodovi = 0; 
+    let tocke = t;
+    return this;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+  method void next() {
+
+    var int novibroj;
+    let novibroj = tocke.vratibrojpojedenih() * 10;
+    if (~(novibroj = bodovi)) {
+      let bodovi = novibroj;
+     
+     /// updateaj broj bodova
+      do draw();
+    }
+    return;
+  }
+  method int vratibodove(){
+      return bodovi; 
+}
+  method void draw() {
+    do Output.moveCursor(3, 46); // row, col
+    do Output.printInt(bodovi);
+    return;
+  }
+  
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}

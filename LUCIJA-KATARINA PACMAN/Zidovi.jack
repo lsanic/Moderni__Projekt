@@ -1,0 +1,121 @@
+class Zidovi {
+   field int broj; 
+  field Array zidovi;
+
+  constructor Zidovi new() {
+    let broj = 36;
+    do crtajzidove();
+    return this;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+  method void crtajzidove() {
+   
+
+        let zidovi = Array.new(broj);
+    let zidovi[0] = Zid.new(27, 224, 342, 234); // donji zid
+    let zidovi[1] = Zid.new(27, 9, 342, 18); // gornji zid
+    let zidovi[2] = Zid.new(27, 9 , 36, 234);  // lijevi zid
+    let zidovi[3] = Zid.new(333, 9, 342, 234); // desni zid
+    
+    //// T oblici
+    let zidovi[4] = Zid.new(53 ,41, 133 ,50);// dugi dio od t
+    let zidovi[5] = Zid.new(87 ,50, 100 , 88); // kratki dio t
+    /// desni produzetak lijevog T
+    let zidovi[33] = Zid.new( 121 ,41 ,133 , 68 );
+    //// lijevi produzetak lijevog T
+    let zidovi[35] = Zid.new( 53,41 , 65, 68 );
+
+    let zidovi[10] = Zid.new( 230 ,41 ,313 ,50 );/// gornji desni T dugi dio 
+    let zidovi[11] = Zid.new(264, 50, 277, 88); // desni T manji dio
+    /// produzetak desni desnog T
+    let zidovi[34] = Zid.new(301 ,41 , 313 , 68 );
+    /// produzetak lijevi desnog T
+    let zidovi[32] = Zid.new( 230, 41 , 242 , 68);
+
+
+    let zidovi[6] = Zid.new(27 ,93 , 68 , 106); /// lijeva strana mali zidic
+    let zidovi[7] = Zid.new(87 ,110, 100, 156); 
+    let zidovi[8] = Zid.new( 57 , 128 , 66 , 193); ///dugi dio L1
+    let zidovi[9] = Zid.new(57, 193, 100 , 203); // donji dio L1
+    
+    let zidovi[16] = Zid.new(87, 110, 136, 120); 
+    let zidovi[17] = Zid.new(127, 93, 136, 110); 
+
+    /// okomita crta izmedu T-ova
+    let zidovi[12] = Zid.new(177, 9 , 189 , 69 );
+    let zidovi[20] = Zid.new(160, 59 , 206 , 69 );
+
+    //// duhovi kocka 
+    let zidovi[13] = Zid.new(160, 93, 220, 106);  // pocetak kocke
+    let zidovi[14] = Zid.new(160, 143, 220, 156); // donji dio kockice
+    let zidovi[15] = Zid.new(215, 93, 227, 156); // desni dio kocke
+    
+    //// blokovi/ kockice razbacane
+    let zidovi[24] = Zid.new( 125, 139 , 140, 156);
+    let zidovi[23] = Zid.new( 125, 175  ,140, 230 );
+    let zidovi[18] = Zid.new( 125 ,216 ,155 ,234); 
+    let zidovi[22] = Zid.new( 303 , 92 , 342 , 116);
+    let zidovi[29] = Zid.new( 285 , 175 , 315 , 210);
+
+    /// L desna strana
+    let zidovi[19] = Zid.new( 250 , 105 , 259 , 155);
+    let zidovi[21] = Zid.new( 250, 105 ,280, 116);
+    let zidovi[30] = Zid.new( 297 , 145 , 312 ,  158);
+    let zidovi[31] = Zid.new( 250, 145, 280, 158);
+     
+    //// donji desni dio
+    let zidovi[25] = Zid.new( 177, 175 , 189 , 210);
+    let zidovi[26] = Zid.new( 160 , 175 , 227 , 186);
+    let zidovi[27] = Zid.new( 210 , 210 , 227 , 234);
+    let zidovi[28] = Zid.new( 250, 175 , 259 , 234);
+
+    return;
+  }
+
+  // draw all walls
+  method void draw() {
+    var Zid z;
+    var int i;
+    let i = 0;
+    while (i < broj) {
+      let z = zidovi[i];
+      do z.draw();
+      let i = i + 1;
+    }
+    return;
+  }
+
+ 
+  method boolean Preklapanje(int x1, int y1, int x2, int y2) {
+    var Zid z;
+    var int i;
+    let i = 0;
+    while (i < broj) {
+      let z = zidovi[i];
+      if (z.Preklapanje(x1, y1, x2, y2)) {
+        return true;
+      }
+      let i = i + 1;
+    }
+    return false;
+  }
+
+  method void dispose() {
+	var Zid z;
+	var int i;
+    let i = 0;
+    while (i < broj) {
+      let z = zidovi[i];
+      do z.dispose();
+      let i = i + 1;
+    }
+	  do zidovi.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

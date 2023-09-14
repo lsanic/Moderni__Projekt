@@ -1,0 +1,103 @@
+class Igra {
+  field Bodovi bodovi;
+  field PacMan pacman;
+  field Tocke tocke;
+  field Zidovi zidovi;
+  field Duhovi duhovi;
+  field Natpisi natpisi;
+  field int level;
+ 
+
+  constructor Igra new() {
+    do stvorilikove();
+    let level = 1;
+    return this;
+  }
+
+  method void init() {
+    do pacman.init();
+    do zidovi.init();
+    do tocke.init();
+    do bodovi.init();
+    do duhovi.init();
+    do natpisi.init();
+    return;
+  }
+
+  method void next() {
+  if (pacman.getIsCaptured()) {
+    do Output.moveCursor(13, 46); 
+    do Output.printString("GAME OVER");
+    do Output.moveCursor(15, 46); 
+    do Output.printString("- RESTARTING");
+    do Sys.wait(5000);
+
+    do novaigra();
+  } else  {
+    if ((tocke.vratibroj()-76) =(bodovi.vratibodove()/10)) {
+      if (level = 3) {
+        do Output.moveCursor(10, 46); 
+        do Output.printString("YOU WIN!");
+      } else {
+        do Output.moveCursor(10, 46); 
+      do Output.printString("LEVEL COMPLETE!");
+      do Sys.wait(1000);
+        let level = level + 1;
+        do novaigra();
+      }
+    } else {
+      do pacman.next();
+      do duhovi.next();
+      do bodovi.next();
+    }
+  }
+  do Output.moveCursor(10, 46); 
+    do Output.printInt(level);
+  return;
+  
+}
+
+
+  method void tipkanje(int tipka) {
+    if (tipka = 113) {
+      do novaigra();
+      return;
+    }
+    do pacman.tipka(tipka);
+    return;
+  }
+
+  method void novaigra() {
+    do obrisilikove();
+    do Screen.clearScreen();
+    do stvorilikove();
+    do init();
+    return;
+  }
+
+  method void stvorilikove() {
+    let zidovi = Zidovi.new();
+    let tocke = Tocke.new();
+    let pacman = PacMan.new(tocke, zidovi);
+    let bodovi = Bodovi.new(tocke);
+    let duhovi = Duhovi.new(pacman, zidovi, tocke, level);
+    let natpisi = Natpisi.new();
+    return;
+  }
+
+  method void obrisilikove() {
+    do zidovi.dispose();
+    do tocke.dispose();
+    do pacman.dispose();
+    do bodovi.dispose();
+    do duhovi.dispose();
+    do natpisi.dispose();
+    return;
+  }
+
+  method void dispose() {
+    do obrisilikove();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

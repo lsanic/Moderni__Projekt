@@ -1,0 +1,37 @@
+class Zid {
+  // lijevo je lijevi x, desno desni, gore je najveci y, a dolje najmanji y
+  field int lijevo, gore, desno, dolje;
+
+   // construct wall
+  constructor Zid new(int x1, int y1, int x2, int y2) {
+    let lijevo = x1;
+    let gore = y1;
+    let desno = x2;
+    let dolje = y2;
+    return this;
+  }
+
+  // draw wall rectangle
+  method void draw() {
+    do Screen.setColor(true);
+    do Screen.drawRectangle(lijevo, gore , desno, dolje);
+    return;
+  }
+
+ 
+  method boolean Preklapanje(int a, int b, int c, int d) {
+    return (
+    
+      (b < (dolje + 1)) & (d > (gore - 1))
+    ) & (
+      
+      (a < (desno + 1)) & (c > (lijevo - 1))
+    );
+  }
+
+  // brisanje zida
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}

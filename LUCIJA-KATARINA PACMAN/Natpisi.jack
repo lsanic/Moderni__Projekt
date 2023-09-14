@@ -1,0 +1,45 @@
+class Natpisi {
+    field int broj;
+  field Array natpisi;
+
+  constructor Natpisi new() {
+    let broj = 2;
+    let natpisi = Array.new(2);
+    do print();
+    return this;
+  }
+
+  method void print() {
+    
+    let natpisi[0] = Natpis.new("SCORE", 2, 46); 
+    let natpisi[1] = Natpis.new("LEVEL:",9, 46 );
+    return;
+  }
+
+  method void init() {
+    
+    var int i;
+    var Natpis n;
+    let i = 0;
+    while (i < broj) {
+      let n = natpisi[i];
+      do n.init();
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void dispose() {
+	  var Natpis n;
+	  var int i;
+    let i = 0;
+    while (i < broj) {
+      let n = natpisi[i];
+      do n.dispose();
+      let i = i + 1;
+    }
+	  do natpisi.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

@@ -1,0 +1,191 @@
+class PacMan {
+  field int x, y;
+  field int promjer;
+  
+  field int smjer;
+  field Zidovi zidovi;
+  field Tocke tocke;
+  field int brzina; // brzina je broj pixela koji prijede "odjednom"
+  field boolean uhvacen;
+
+  constructor PacMan new(Tocke t, Zidovi z) {
+    let brzina = 3;
+    let x = 165; 
+    let y = 155; 
+    let promjer = 12;
+    let smjer = 1; 
+    let uhvacen = false;
+
+    let zidovi = z;
+    let tocke = t;
+
+    return this;
+  }
+
+ 
+  method int getX() {
+    return x;
+  }
+
+  
+  method int getY() {
+    return y;
+  }
+
+  
+  method int rubX() {
+    return x + promjer - 1;
+  }
+
+  
+  method int rubY() {
+    return y + promjer - 1;
+  }
+
+  method boolean getIsCaptured() {
+    return uhvacen;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+  method void next() {
+    var boolean pomaknuose;
+    let pomaknuose = advance();
+    if (pomaknuose) {
+      do draw();
+      do pojedi();
+    }
+    return;
+  }
+
+  method boolean advance() {
+    var int noviX, noviY;
+    let noviX = postaviNoviX();
+    let noviY = postaviNoviY();
+    if (sudar(noviX, noviY)) {
+      return false;
+    }
+    if ((x = noviX) & (y = noviY)) {
+      return false;
+    }
+    let x = noviX;
+    let y = noviY;
+    return true;
+  }
+
+  method void pojedi() {
+    do tocke.PojedeneSu(x, y, rubX(), rubY(), true);
+    return;
+  }
+
+  method void draw() {
+ 
+  do Screen.setColor(false);
+
+  if (smjer = 1) {
+    do Screen.drawRectangle(x, y + brzina, rubX(), rubY() + brzina);
+  }
+  if (smjer = 2) {
+    do Screen.drawRectangle(x, y - brzina, rubX(), rubY() - brzina);
+  }
+  if (smjer = 3) {
+    do Screen.drawRectangle(x + brzina, y, rubX() + brzina, rubY());
+  }
+  if (smjer = 4) {
+    do Screen.drawRectangle(x - brzina, y, rubX() - brzina, rubY());
+  }
+
+  do Screen.setColor(true); // Set PacMan body color
+  do Screen.drawCircle(x + 6, y + 6, 5);
+  return;
+}
+
+
+  method boolean sudar(int noviX, int noviY) {
+    var int noviRubX, noviRubY;
+    let noviRubX = noviX + promjer - 1;
+    let noviRubY = noviY + promjer - 1;
+    return zidovi.Preklapanje(noviX, noviY, noviRubX, noviRubY);
+  }
+
+  method int postaviNoviX() {
+    var int noviX;
+    let noviX = x;
+     if (smjer = 3) {
+      let noviX = x - brzina;
+    }
+    if (smjer = 4) {
+      let noviX = x + brzina;
+    }
+    
+    return noviX;
+  }
+
+  method int postaviNoviY() {
+    var int noviY;
+    let noviY = y;
+    if (smjer = 1) {
+      let noviY = y - brzina;
+    }
+    if (smjer = 2) {
+      let noviY = y + brzina;
+    }
+    
+    if (noviY > 220) {
+      let noviY = 12;
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, rubX(), rubY());
+    }
+    if (noviY < 10) {
+      let noviY = 220;
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, rubX(), rubY());
+    }
+    return noviY;
+  }
+
+  method void tipka(int t) {
+    if (t = 131) {
+      do postaviSmjer(1); 
+    }
+    if (t = 133) {
+      do postaviSmjer(2); 
+    }
+    if (t = 130) {
+      do postaviSmjer(3); 
+    }
+    if (t = 132) {
+      do postaviSmjer(4);
+    }
+    return;
+  }
+
+  method void postaviSmjer(int noviSmjer) {
+    let smjer = noviSmjer;
+    return;
+  }
+
+  method void uhvati() {
+    let uhvacen = true;
+    return;
+  }
+
+ 
+
+
+  method boolean Preklapanje(int x1, int y1, int x2, int y2) {
+    return (
+      (x1 < (rubX()+1)) & (x2 > (x-1))
+    ) & (
+      (y1 < (rubY()+1)) & (y2 > (y-1))
+    );
+  }
+
+  method void dispose() {
+    	do Memory.deAlloc(this);
+    return;
+  }
+}

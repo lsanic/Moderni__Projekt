@@ -1,0 +1,65 @@
+class Duhovi {
+  field Array duhovi;
+  field int broj;
+  field PacMan pacman;
+  field Zidovi zidovi;
+  field Tocke tocke;
+  field int level; 
+
+  constructor Duhovi new(PacMan p, Zidovi z, Tocke t, int l) {
+    let broj = 4;
+    let zidovi = z;
+    let pacman = p;
+    let tocke = t;
+    let level = l;
+    let duhovi = Array.new(broj);
+    do crtajduhove(level);
+    return this;
+  }
+
+  method void crtajduhove(int level) {
+    let duhovi[0] = Duh.new(162, 117, pacman, zidovi, tocke, level);
+    let duhovi[1] = Duh.new(162, 117, pacman, zidovi, tocke, level);
+    let duhovi[2] = Duh.new(162, 117, pacman, zidovi, tocke, level);
+    let duhovi[3] = Duh.new(162, 117, pacman, zidovi, tocke, level);
+    return;
+  }
+
+  method void init() {
+    var int i;
+    var Duh d;
+    let i = 0;
+    while (i < broj) {
+      let d = duhovi[i];
+      do d.init();
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void next() {
+    var int i;
+    var Duh d;
+    let i = 0;
+    while (i < broj) {
+      let d = duhovi[i];
+      do d.next();
+      let i = i + 1;
+    }
+    return;
+  }
+
+  method void dispose() { 
+    var Duh d; 
+    var int i;
+    let i = 0;
+    while (i < 4) {
+      let d = duhovi[i];
+      do d.dispose();
+      let i = i + 1;
+    }
+	  do duhovi.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

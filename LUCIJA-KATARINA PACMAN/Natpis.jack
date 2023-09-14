@@ -1,0 +1,30 @@
+class Natpis {
+ 
+  field String text;
+  field int redak;
+  field int stupac;
+
+  constructor Natpis new(String n, int r, int s) {
+    let text = n;
+    let redak = r;
+    let stupac = s;
+    return this;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+  method void draw() {
+    do Output.moveCursor(redak, stupac); 
+    do Output.printString(text);
+    return;
+  }
+
+  method void dispose() {
+	  do text.dispose();
+    do Memory.deAlloc(this);
+    return;
+  }
+}

@@ -1,0 +1,27 @@
+class Ekran {
+ 
+  
+    function void print() {
+    /// crta PacMana i ispisuje tekst
+    do Screen.setColor(true);
+    
+     do Screen.drawCircle(220, 85, 60);
+     do Screen.setColor(false);
+     do Screen.drawRectangle(235, 100, 290, 250 );
+     do Screen.setColor(false);
+     do Screen.drawCircle(242, 77, 6);
+   
+    //  print text below title
+    do Output.moveCursor(15, 24); 
+    do Output.printString("PAC-MAN");
+    do Output.moveCursor(18, 15); // row, column
+    do Output.printString("PRESS ANY KEY TO START THE GAME");
+    return;
+  }
+
+
+  method void dispose() {
+    do Memory.deAlloc(this);
+      return;
+  }
+}

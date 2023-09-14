@@ -1,0 +1,49 @@
+class Tocka {
+ 
+  field int x, y;
+  field int promjer;
+  field boolean pojedena;
+  
+
+  constructor Tocka new(int a, int b) {
+    let promjer = 4;
+    let x = a;
+    let y = b;
+    /// u pocetku nije pojedena 
+    let pojedena = false;
+    return this;
+  }
+
+ 
+  method void draw() {
+    do Screen.setColor(~pojedena); /// buduci da su u jacku boje true ili false mi ju bojamo u ovisnosti o tome je li ju Pacman pojeo ili ne
+    do Screen.drawRectangle(x, y, x+promjer-1, y+promjer-1);
+    return;
+  }
+
+
+  method boolean Preklapanje(int a, int b, int c, int d) {
+    return (
+      (b < (y + promjer)) & (d > (y - 1))
+    )& (
+      (a < (x + promjer)) & (c > (x - 1))
+    );
+  }
+
+
+  method boolean VratiPojedena() {
+    return pojedena;
+  }
+
+
+  method void PojedenaJe() {
+    let pojedena = true;
+    return;
+  } 
+
+
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}

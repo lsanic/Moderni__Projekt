@@ -1,0 +1,228 @@
+class Duh {
+ 
+  field int x, y;
+ 
+  field int velicina;
+  field int smjer;
+  field int level;
+
+  field int brzina;
+ 
+  field Zidovi zidovi;
+  
+  field PacMan pacman;
+  
+  field Tocke tocke;
+
+  constructor Duh new(int a, int b, PacMan p, Zidovi z, Tocke t, int l) {
+    let velicina = 12;
+    let x = a; 
+    let y = b; 
+    let smjer = 3; // krece se ulijevo -> dizajn mazea
+    let pacman = p;
+    let zidovi = z;
+    let tocke = t;
+    let level = l; 
+    if (level = 1) {
+      let brzina = 3;
+    } 
+    if (level = 2 )
+    {
+        let brzina = 4;
+     }
+    let brzina= 5;
+    return this;
+  }
+
+  method int rubX() {
+    return x + velicina - 1;
+  }
+
+  method int rubY() {
+    return y + velicina - 1;
+  }
+
+  method void init() {
+    do draw();
+    return;
+  }
+
+
+  method void next() {
+    var boolean pomaknuose;
+    let pomaknuose = pomak();
+    if (pomaknuose) {
+      do draw();
+    }
+    if (pacman.Preklapanje(x, y, rubX(), rubY())) {
+      do pacman.uhvati();
+    }
+    return;
+  }
+
+ 
+  method boolean pomak() {
+    var int noviX;
+    var int noviY;
+    let noviX = dohvatix();
+    let noviY = dohvatiy();
+    if (sudar(noviX, noviY)) {
+      do randomsmjer();
+      return false;
+    }
+    /// ukoliko je nakon pomicanja x jednak novom xu i y novom yu onda se nismo pomaknuli
+    if ((x = noviX) & (y = noviY)) {
+      return false;
+    }
+    let x = noviX;
+    let y = noviY;
+    return true;
+  }
+
+  
+  method boolean sudar(int noviX, int noviY) {
+    var int nextEndX, nextEndY;
+    let nextEndX = noviX + velicina - 1;
+    let nextEndY = noviY + velicina - 1;
+    return zidovi.Preklapanje(noviX, noviY, nextEndX, nextEndY);
+  }
+
+  
+  method void promjenasmjera() {
+    var int pX;
+    var int pY;
+    var int absX, absY;
+    let pX = pacman.getX();
+    let pY = pacman.getY();
+   
+    /// racunamo abs razlike
+    let absY = Math.max(y, pY) - Math.min(y, pY);
+    let absX = Math.max(x, pX) - Math.min(x, pX);
+    /// nastojimo smanjiti razliku izmedu koord pacmana i koord duha
+    if (~(absX = 0) & (absX > absY)) {
+      if (pX < x) {
+        let smjer = 3;
+        return;
+      }
+      let smjer = 4;
+      return;
+    }
+    if (pY < y) {
+      let smjer = 1;
+      return;
+    }
+    let smjer = 2;
+    return;
+  }
+  
+
+
+  method void randomsmjer() {
+	  var int i;
+	  let i = Random.random(100);
+    if (i < 25) {
+		let smjer = 1;
+    return;
+	  }
+	  if (i < 50) {
+		  let smjer = 2;
+      return;
+	  }
+	  if (i < 75) {
+		  let smjer = 3;
+      return;
+	  }
+	  if (i < 100) {
+		  let smjer = 4;
+      return;
+	  }
+	  do promjenasmjera();
+    return;
+  }
+  
+  method int dohvatix() {
+    var int noviX;
+    let noviX = x;
+    if (smjer = 4) {
+      let noviX = x + brzina;
+    }
+    if (smjer = 3) {
+      let noviX = x - brzina;
+    }
+    return noviX;
+  }
+
+  method int dohvatiy() {
+    var int noviY;
+    let noviY = y;
+    if (smjer = 2) {
+      let noviY = y + brzina;
+    }
+    if (smjer = 1) {
+      let noviY = y - brzina;
+    }
+	  if (noviY > 220) {
+      let noviY = 12;
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, rubX(), rubY());
+    }
+    if (noviY < 12) {
+      let noviY = 220;
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, rubX(), rubY());
+    }
+    return noviY;
+  }
+
+  method void draw() {
+    var int starolijevo;
+    var int starodesno;
+    var int starogore;
+    var int starodolje;
+
+    // obrisemo duha
+    do Screen.setColor(false);
+    
+    if (smjer = 4) {
+      let starolijevo = x - brzina;
+      let starodesno = rubX() - brzina;
+      let starogore = y;
+      let starodolje = rubY();
+    }
+    
+    if (smjer = 3) {
+      let starolijevo = x + brzina;
+      let starodesno = rubX() + brzina;
+      let starogore = y;
+      let starodolje = rubY();
+    }
+    
+    if (smjer = 2) {
+      let starolijevo = x;
+      let starodesno = rubX();
+      let starogore = y - brzina;
+      let starodolje = rubY() - brzina;
+    }
+    
+    if (smjer = 1) {
+      let starolijevo = x;
+      let starodesno = rubX();
+      let starogore = y + brzina;
+      let starodolje = rubY() + brzina;
+    }
+
+    // brisemo starog duha
+    do Screen.drawRectangle(starolijevo, starogore, starodesno, starodolje);
+   
+    do tocke.PojedeneSu(starolijevo, starogore, starodesno, starodolje, false);
+    //// crtamo novog
+    do Screen.setColor(true);
+    do Screen.drawRectangle(x, y, rubX(), rubY());
+    return;
+  }
+
+  method void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+}
